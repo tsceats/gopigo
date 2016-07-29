@@ -7,8 +7,9 @@ This repo should be open
 
 ## ToDo
 
-* Complete coding notebooks - tests and writing code
-* Include sensor instructions
-* Sensor tests
+* ~~Complete coding notebooks - tests and writing code~~
+* Include building sensor instructions
+* ~~Sensor tests~~
 * Python challenges
 * Day 2 materials
+* Checkpoint slips
