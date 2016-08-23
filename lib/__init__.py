@@ -1,6 +1,6 @@
 import gopigo as gpg
 from time import sleep
-from gopigo import set_left_speed, set_right_speed, set_speed
+from gopigo import set_left_speed, set_right_speed, set_speed, stop
 
 def waitForTarget():
     while (gpg.read_enc_status() != 0):
