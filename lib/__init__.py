@@ -2,7 +2,7 @@ import gopigo as gpg
 from time import sleep
 
 def waitForTarget():
-    while (read_enc_status() != 0):
+    while (gpg.read_enc_status() != 0):
         sleep(0.1)
 
 def fwd(aTicks):
