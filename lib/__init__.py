@@ -36,6 +36,9 @@ def calibrate(speed):
         sleep(2)
 
 def forwardTicks(distance, speed):
+    distance = max(1, min(distance, 500))
+    speed = max(50, min(speed, 200))
+    
     leftTicks = distance
     rightTicks = distance
     right_speed = speed
