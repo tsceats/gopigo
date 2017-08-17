@@ -135,3 +135,75 @@ def right(aTicks):
         gpg.enc_tgt(1, 0, aTicks)
         gpg.right()
         waitForTarget()
+
+def dist():
+    distances = []
+    for i in range(3):
+        distances.append(gpg.us_dist(15))
+    distances.sort()
+    return distances[1]
+
+def forwardSonar(distance, speed):
+    distance = max(1, min(distance, 500))
+    speed = max(50, min(speed, 200))
+    
+    leftTicks = distance
+    rightTicks = distance
+    right_speed = speed
+    left_speed = speed
+    set_left_speed(left_speed)
+    set_right_speed(right_speed)
+    leftStart = gpg.enc_read(0)
+    rightStart = gpg.enc_read(1)
+    leftTarget = leftStart + leftTicks
+    rightTarget = rightStart + rightTicks
+    isLeftMoving = False
+    isRightMoving = False
+    adjustment_interval = 1
+    last_left_check = leftStart
+    last_right_check = rightStart
+    
+    while(True):
+        leftReading = gpg.enc_read(0)
+        rightReading = gpg.enc_read(1)
+        
+        leftMoved = leftReading - leftStart
+        rightMoved = rightReading - rightStart
+        target = max(leftMoved, rightMoved) + 100
+        leftTarget = leftStart + target
+        rightTarget = rightStart + target
+        
+        leftToEnd = leftTarget - leftReading
+        rightToEnd = rightTarget - rightReading
+        
+        if leftReading >= leftTarget and rightReading >= rightTarget:
+            gpg.stop()
+            break
+        elif leftReading < leftTarget and rightReading < rightTarget:
+            new_left_speed = speed
+            new_right_speed = speed
+            
+            if (leftToEnd > rightToEnd + 1):
+                extraFactor = float(leftToEnd - rightToEnd) / leftToEnd
+                extraFactor = max(0.02, min(0.2, extraFactor))
+                new_left_speed = int(speed * (1.0 + extraFactor))
+            elif (rightToEnd > leftToEnd + 1):
+                extraFactor = float(rightToEnd - leftToEnd) / rightToEnd
+                extraFactor = max(0.02, min(0.2, extraFactor))
+                new_right_speed = int(speed * (1.0 + extraFactor))
+            
+            if (left_speed != new_left_speed):
+                set_left_speed(new_left_speed)
+                left_speed = new_left_speed
+            if (right_speed != new_right_speed):
+                set_right_speed(new_right_speed)
+                right_speed = new_right_speed
+            
+            if (not isLeftMoving) or (not isRightMoving):
+                print "Forward!"
+                gpg.motor_fwd()
+                isLeftMoving = True
+                isRightMoving = True
+        if dist() < distance:
+            gpg.stop()
+            break
