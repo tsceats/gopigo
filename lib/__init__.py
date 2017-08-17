@@ -70,11 +70,11 @@ def forwardTicks(distance, speed):
             
             if (leftToEnd > rightToEnd + 1):
                 extraFactor = float(leftToEnd - rightToEnd) / leftToEnd
-                extraFactor = max(0.02, min(0.2, extraFactor))
+                extraFactor = max(0.02, min(0.15, extraFactor))
                 new_left_speed = int(speed * (1.0 + extraFactor))
             elif (rightToEnd > leftToEnd + 1):
                 extraFactor = float(rightToEnd - leftToEnd) / rightToEnd
-                extraFactor = max(0.02, min(0.2, extraFactor))
+                extraFactor = max(0.02, min(0.15, extraFactor))
                 new_right_speed = int(speed * (1.0 + extraFactor))
             
             if (left_speed != new_left_speed):
